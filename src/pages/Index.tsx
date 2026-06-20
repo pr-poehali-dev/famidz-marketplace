@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -43,6 +44,7 @@ const PAYMENTS = [
 const fmt = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
 
 export default function Index() {
+  const navigate = useNavigate();
   const [active, setActive] = useState('Главная');
 
   return (
@@ -68,7 +70,7 @@ export default function Index() {
             FAMIDZ
           </a>
 
-          <Button className="hidden h-11 gap-2 rounded-xl bg-[hsl(var(--brand))] px-5 font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)] lg:flex">
+          <Button onClick={() => navigate('/catalog')} className="hidden h-11 gap-2 rounded-xl bg-[hsl(var(--brand))] px-5 font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)] lg:flex">
             <Icon name="LayoutGrid" size={18} /> Каталог
           </Button>
 
@@ -95,7 +97,7 @@ export default function Index() {
           {NAV.map((item) => (
             <button
               key={item}
-              onClick={() => setActive(item)}
+              onClick={() => { setActive(item); if (item === 'Каталог') navigate('/catalog'); }}
               className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 active === item ? 'bg-[hsl(var(--brand))] text-[hsl(var(--brand-ink))]' : 'text-muted-foreground hover:bg-secondary'
               }`}
@@ -121,7 +123,7 @@ export default function Index() {
               Более 1 000 000 товаров от проверенных продавцов. Быстрая доставка и безопасная оплата по всей России.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button className="h-12 rounded-xl bg-[hsl(var(--brand))] px-7 font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)] glow">
+              <Button onClick={() => navigate('/catalog')} className="h-12 rounded-xl bg-[hsl(var(--brand))] px-7 font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)] glow">
                 Перейти в каталог <Icon name="ArrowRight" size={18} className="ml-1.5" />
               </Button>
               <Button variant="outline" className="h-12 rounded-xl border-white/20 bg-white/5 px-7 font-semibold text-white hover:bg-white/10">
@@ -183,7 +185,8 @@ export default function Index() {
             <article
               key={p.name}
               style={{ animationDelay: `${i * 50}ms` }}
-              className="group flex animate-scale-in flex-col overflow-hidden rounded-2xl border border-border bg-card opacity-0 transition-all hover:-translate-y-1 hover:border-[hsl(var(--brand))]/50 hover:shadow-xl hover:shadow-[hsl(var(--brand))]/10"
+              className="group flex animate-scale-in cursor-pointer flex-col overflow-hidden rounded-2xl border border-border bg-card opacity-0 transition-all hover:-translate-y-1 hover:border-[hsl(var(--brand))]/50 hover:shadow-xl hover:shadow-[hsl(var(--brand))]/10"
+              onClick={() => navigate(`/product/${i + 1}`)}
             >
               <div className="relative aspect-square overflow-hidden bg-secondary">
                 <span className="absolute left-2 top-2 z-10 rounded-md bg-[hsl(var(--brand))] px-2 py-0.5 text-[11px] font-bold text-[hsl(var(--brand-ink))]">{p.tag}</span>
