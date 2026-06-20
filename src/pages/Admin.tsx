@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useStore, Product } from '@/context/StoreContext';
+import { useAuth } from '@/context/AuthContext';
 
 const CATEGORIES = ['Электроника', 'Одежда', 'Обувь', 'Автотовары', 'Детские товары', 'Красота', 'Спорт', 'Дом и сад', 'Строительство', 'Услуги'];
 const ICONS = ['Smartphone', 'Headphones', 'Watch', 'Tablet', 'Bot', 'Footprints', 'Sparkles', 'Shirt', 'Dumbbell', 'Baby', 'Home', 'Car', 'Hammer', 'Briefcase', 'Package'];
@@ -18,6 +19,7 @@ const fmt = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
 
 export default function Admin() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const { products, addProduct, updateProduct, deleteProduct } = useStore();
   const [activeTab, setActiveTab] = useState<'list' | 'add' | 'edit'>('list');
   const [form, setForm] = useState(EMPTY_FORM);
@@ -99,9 +101,19 @@ export default function Admin() {
             FAMIDZ
           </button>
           <Badge className="rounded-full bg-violet-500/15 text-violet-400">Админ</Badge>
-          <button onClick={() => navigate('/')} className="ml-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
-            <Icon name="ArrowLeft" size={16} /> На сайт
-          </button>
+          <div className="ml-auto flex items-center gap-2">
+            <button onClick={() => navigate('/')} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <Icon name="ArrowLeft" size={16} /> На сайт
+            </button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => { logout(); navigate('/admin-login'); }}
+              className="rounded-xl border-rose-500/30 text-rose-400 hover:bg-rose-500/10 hover:text-rose-400"
+            >
+              <Icon name="LogOut" size={15} className="mr-1.5" /> Выйти
+            </Button>
+          </div>
         </div>
       </header>
 

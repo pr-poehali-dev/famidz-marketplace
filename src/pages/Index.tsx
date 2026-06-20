@@ -88,7 +88,7 @@ export default function Index() {
               <Icon name="User" size={22} />
               <span className="hidden sm:block">Войти</span>
             </button>
-            <button onClick={() => navigate('/admin')} className="flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-secondary hover:text-violet-400">
+            <button onClick={() => navigate('/admin-login')} className="flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-secondary hover:text-violet-400">
               <Icon name="ShieldCheck" size={22} />
               <span className="hidden sm:block">Админ</span>
             </button>
