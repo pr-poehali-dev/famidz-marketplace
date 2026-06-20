@@ -48,10 +48,10 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-background font-sans text-foreground antialiased">
       {/* Top bar */}
-      <div className="hidden bg-[hsl(var(--brand-ink))] py-2 text-xs text-slate-300 md:block">
+      <div className="hidden border-b border-border/40 bg-[hsl(var(--brand-ink))] py-2 text-xs text-slate-400 md:block">
         <div className="container flex items-center justify-between">
           <span className="flex items-center gap-2">
-            <Icon name="Truck" size={14} /> Бесплатная доставка по всей России от 3000 ₽
+            <Icon name="Truck" size={14} className="text-[hsl(var(--brand))]" /> Бесплатная доставка по всей России от 3000 ₽
           </span>
           <div className="flex items-center gap-5">
             <span className="flex items-center gap-1.5 hover:text-white"><Icon name="Phone" size={13} /> 8 800 555-35-35</span>
@@ -61,20 +61,20 @@ export default function Index() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/60 bg-white/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
         <div className="container flex items-center gap-6 py-4">
           <a className="flex items-center gap-2 font-display text-2xl font-extrabold tracking-tight" href="#">
-            <span className="grid h-9 w-9 place-items-center rounded-xl brand-gradient text-white">F</span>
+            <span className="grid h-9 w-9 place-items-center rounded-xl brand-gradient text-white glow">F</span>
             FAMIDZ
           </a>
 
-          <Button className="hidden h-11 gap-2 rounded-xl bg-[hsl(var(--brand))] px-5 font-semibold text-white hover:bg-[hsl(217_91%_53%)] lg:flex">
+          <Button className="hidden h-11 gap-2 rounded-xl bg-[hsl(var(--brand))] px-5 font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)] lg:flex">
             <Icon name="LayoutGrid" size={18} /> Каталог
           </Button>
 
           <div className="relative hidden flex-1 md:block">
             <Icon name="Search" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Искать товары, бренды и категории…" className="h-11 rounded-xl border-border bg-secondary/60 pl-11 pr-4 focus-visible:ring-[hsl(var(--brand))]" />
+            <Input placeholder="Искать товары, бренды и категории…" className="h-11 rounded-xl border-border bg-secondary/60 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus-visible:ring-[hsl(var(--brand))]" />
           </div>
 
           <div className="ml-auto flex items-center gap-1 md:ml-0">
@@ -97,7 +97,7 @@ export default function Index() {
               key={item}
               onClick={() => setActive(item)}
               className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                active === item ? 'bg-[hsl(var(--brand-ink))] text-white' : 'text-muted-foreground hover:bg-secondary'
+                active === item ? 'bg-[hsl(var(--brand))] text-[hsl(var(--brand-ink))]' : 'text-muted-foreground hover:bg-secondary'
               }`}
             >
               {item}
@@ -108,36 +108,38 @@ export default function Index() {
 
       {/* Hero */}
       <section className="container pt-6">
-        <div className="relative overflow-hidden rounded-3xl brand-gradient px-8 py-12 md:px-14 md:py-20">
+        <div className="relative overflow-hidden rounded-3xl border border-border brand-gradient px-8 py-12 md:px-14 md:py-20">
+          <div className="absolute inset-0 grid-bg opacity-60" />
           <div className="relative z-10 max-w-xl animate-fade-in">
-            <Badge className="mb-5 rounded-full border-white/20 bg-white/10 px-3 py-1 text-white backdrop-blur">
+            <Badge className="mb-5 rounded-full border-[hsl(var(--brand))]/40 bg-[hsl(var(--brand))]/10 px-3 py-1 text-[hsl(var(--brand))] backdrop-blur">
               🚀 Распродажа недели · до −70%
             </Badge>
             <h1 className="font-display text-4xl font-extrabold leading-[1.05] text-white text-balance md:text-6xl">
-              Всё, что нужно,<br />в одном месте
+              Всё, что нужно,<br /><span className="glow-text text-[hsl(var(--brand))]">в одном месте</span>
             </h1>
             <p className="mt-5 max-w-md text-base text-slate-300 md:text-lg">
               Более 1 000 000 товаров от проверенных продавцов. Быстрая доставка и безопасная оплата по всей России.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button className="h-12 rounded-xl bg-white px-7 font-semibold text-[hsl(var(--brand-ink))] hover:bg-slate-100">
+              <Button className="h-12 rounded-xl bg-[hsl(var(--brand))] px-7 font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)] glow">
                 Перейти в каталог <Icon name="ArrowRight" size={18} className="ml-1.5" />
               </Button>
-              <Button variant="outline" className="h-12 rounded-xl border-white/30 bg-transparent px-7 font-semibold text-white hover:bg-white/10">
+              <Button variant="outline" className="h-12 rounded-xl border-white/20 bg-white/5 px-7 font-semibold text-white hover:bg-white/10">
                 Акции дня
               </Button>
             </div>
             <div className="mt-9 flex gap-8 text-white">
               {[['1M+', 'товаров'], ['100K+', 'продавцов'], ['4.9★', 'рейтинг']].map(([n, l]) => (
                 <div key={l}>
-                  <div className="font-display text-2xl font-extrabold">{n}</div>
+                  <div className="font-display text-2xl font-extrabold text-[hsl(var(--brand))]">{n}</div>
                   <div className="text-xs text-slate-400">{l}</div>
                 </div>
               ))}
             </div>
           </div>
           <img src={HERO_IMG} alt="FAMIDZ" className="pointer-events-none absolute -right-10 top-1/2 hidden w-[46%] -translate-y-1/2 animate-float rounded-3xl object-cover opacity-90 md:block" />
-          <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[hsl(var(--brand))] opacity-40 blur-3xl" />
+          <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[hsl(var(--brand))] opacity-30 blur-3xl" />
+          <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-[hsl(var(--brand-2))] opacity-20 blur-3xl" />
         </div>
       </section>
 
@@ -154,9 +156,9 @@ export default function Index() {
             <button
               key={c.name}
               style={{ animationDelay: `${i * 40}ms` }}
-              className="group flex animate-fade-in flex-col items-center gap-3 rounded-2xl border border-border bg-card p-5 text-center opacity-0 transition-all hover:-translate-y-1 hover:border-[hsl(var(--brand))]/40 hover:shadow-lg hover:shadow-[hsl(var(--brand))]/10"
+              className="group flex animate-fade-in flex-col items-center gap-3 rounded-2xl border border-border bg-card p-5 text-center opacity-0 transition-all hover:-translate-y-1 hover:border-[hsl(var(--brand))]/50 hover:shadow-lg hover:shadow-[hsl(var(--brand))]/10"
             >
-              <span className="grid h-12 w-12 place-items-center rounded-xl bg-secondary text-[hsl(var(--brand))] transition-colors group-hover:bg-[hsl(var(--brand))] group-hover:text-white">
+              <span className="grid h-12 w-12 place-items-center rounded-xl bg-secondary text-[hsl(var(--brand))] transition-all group-hover:bg-[hsl(var(--brand))] group-hover:text-[hsl(var(--brand-ink))] group-hover:glow">
                 <Icon name={c.icon} size={24} />
               </span>
               <span className="text-sm font-medium">{c.name}</span>
@@ -181,29 +183,29 @@ export default function Index() {
             <article
               key={p.name}
               style={{ animationDelay: `${i * 50}ms` }}
-              className="group flex animate-scale-in flex-col overflow-hidden rounded-2xl border border-border bg-card opacity-0 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200"
+              className="group flex animate-scale-in flex-col overflow-hidden rounded-2xl border border-border bg-card opacity-0 transition-all hover:-translate-y-1 hover:border-[hsl(var(--brand))]/50 hover:shadow-xl hover:shadow-[hsl(var(--brand))]/10"
             >
               <div className="relative aspect-square overflow-hidden bg-secondary">
-                <span className="absolute left-2 top-2 z-10 rounded-md bg-[hsl(var(--brand))] px-2 py-0.5 text-[11px] font-bold text-white">{p.tag}</span>
-                <button className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/90 text-muted-foreground transition-colors hover:text-rose-500">
+                <span className="absolute left-2 top-2 z-10 rounded-md bg-[hsl(var(--brand))] px-2 py-0.5 text-[11px] font-bold text-[hsl(var(--brand-ink))]">{p.tag}</span>
+                <button className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-background/70 text-muted-foreground backdrop-blur transition-colors hover:text-rose-400">
                   <Icon name="Heart" size={16} />
                 </button>
-                <div className="grid h-full w-full place-items-center text-[hsl(var(--brand))]/30 transition-transform duration-500 group-hover:scale-110">
+                <div className="grid h-full w-full place-items-center text-[hsl(var(--brand))]/40 transition-transform duration-500 group-hover:scale-110">
                   <Icon name={p.icon} size={64} />
                 </div>
               </div>
               <div className="flex flex-1 flex-col p-3">
-                <div className="mb-1 flex items-center gap-1 text-xs text-amber-500">
+                <div className="mb-1 flex items-center gap-1 text-xs text-amber-400">
                   <Icon name="Star" size={13} className="fill-amber-400 text-amber-400" />
                   <span className="font-semibold">{p.rating}</span>
                   <span className="text-muted-foreground">({p.reviews})</span>
                 </div>
                 <h3 className="mb-2 line-clamp-2 flex-1 text-sm font-medium leading-snug">{p.name}</h3>
                 <div className="mb-2 flex items-baseline gap-2">
-                  <span className="font-display text-lg font-extrabold">{fmt(p.price)}</span>
+                  <span className="font-display text-lg font-extrabold text-[hsl(var(--brand))]">{fmt(p.price)}</span>
                   <span className="text-xs text-muted-foreground line-through">{fmt(p.old)}</span>
                 </div>
-                <Button size="sm" className="h-9 w-full rounded-lg bg-[hsl(var(--brand-ink))] font-semibold text-white hover:bg-[hsl(222_47%_18%)]">
+                <Button size="sm" className="h-9 w-full rounded-lg bg-[hsl(var(--brand))] font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)]">
                   <Icon name="ShoppingCart" size={15} className="mr-1.5" /> В корзину
                 </Button>
               </div>
@@ -216,11 +218,11 @@ export default function Index() {
       <section className="container pt-14">
         <div className="grid gap-4 md:grid-cols-3">
           {[
-            { t: 'Товары дня', d: 'Скидки до −70% каждый день', icon: 'Flame', bg: 'from-rose-500 to-orange-400' },
-            { t: 'Новинки', d: 'Свежие поступления недели', icon: 'Sparkle', bg: 'from-[hsl(var(--brand))] to-cyan-400' },
-            { t: 'Рекомендуем', d: 'Подобрано лично для вас', icon: 'ThumbsUp', bg: 'from-violet-500 to-fuchsia-400' },
+            { t: 'Товары дня', d: 'Скидки до −70% каждый день', icon: 'Flame', bg: 'from-rose-500/90 to-orange-500/80' },
+            { t: 'Новинки', d: 'Свежие поступления недели', icon: 'Sparkle', bg: 'from-[hsl(var(--brand))]/90 to-cyan-400/70' },
+            { t: 'Рекомендуем', d: 'Подобрано лично для вас', icon: 'ThumbsUp', bg: 'from-violet-500/90 to-fuchsia-500/70' },
           ].map((b) => (
-            <div key={b.t} className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${b.bg} p-6 text-white transition-transform hover:-translate-y-1`}>
+            <div key={b.t} className={`relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br ${b.bg} p-6 text-white transition-transform hover:-translate-y-1`}>
               <Icon name={b.icon} size={28} />
               <h3 className="mt-3 font-display text-xl font-extrabold">{b.t}</h3>
               <p className="text-sm text-white/85">{b.d}</p>
@@ -232,18 +234,18 @@ export default function Index() {
 
       {/* Become seller */}
       <section className="container pt-14">
-        <div className="grid items-center gap-8 overflow-hidden rounded-3xl border border-border bg-secondary/40 p-8 md:grid-cols-2 md:p-12">
+        <div className="grid items-center gap-8 overflow-hidden rounded-3xl border border-border bg-card p-8 md:grid-cols-2 md:p-12">
           <div>
             <Badge className="mb-4 rounded-full bg-[hsl(var(--brand))]/10 text-[hsl(var(--brand))]">Для бизнеса</Badge>
             <h2 className="font-display text-3xl font-extrabold text-balance">Продавайте на FAMIDZ</h2>
             <p className="mt-3 max-w-md text-muted-foreground">
               Откройте магазин за 5 минут и получите доступ к миллионам покупателей по всей России. Удобная аналитика, чат и быстрый вывод средств.
             </p>
-            <Button className="mt-6 h-12 rounded-xl bg-[hsl(var(--brand))] px-7 font-semibold text-white hover:bg-[hsl(217_91%_53%)]">
+            <Button className="mt-6 h-12 rounded-xl bg-[hsl(var(--brand))] px-7 font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)] glow">
               Начать продавать <Icon name="ArrowRight" size={18} className="ml-1.5" />
             </Button>
           </div>
-          <img src={PRODUCTS_IMG} alt="Товары" className="aspect-[4/3] w-full rounded-2xl object-cover" />
+          <img src={PRODUCTS_IMG} alt="Товары" className="aspect-[4/3] w-full rounded-2xl border border-border object-cover" />
         </div>
       </section>
 
@@ -253,7 +255,7 @@ export default function Index() {
         <p className="mb-7 text-center text-sm text-muted-foreground">Безопасные платежи с защитой каждой покупки</p>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
           {PAYMENTS.map((p) => (
-            <div key={p.name} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-[hsl(var(--brand))]/40">
+            <div key={p.name} className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-1 hover:border-[hsl(var(--brand))]/50">
               <Icon name={p.icon} size={26} className="text-[hsl(var(--brand))]" />
               <span className="text-center text-xs font-medium">{p.name}</span>
             </div>
@@ -262,16 +264,16 @@ export default function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-16 bg-[hsl(var(--brand-ink))] text-slate-300">
+      <footer className="mt-16 border-t border-border bg-[hsl(var(--brand-ink))] text-slate-400">
         <div className="container grid gap-10 py-14 md:grid-cols-4">
           <div>
             <div className="mb-4 flex items-center gap-2 font-display text-xl font-extrabold text-white">
-              <span className="grid h-8 w-8 place-items-center rounded-lg brand-gradient">F</span> FAMIDZ
+              <span className="grid h-8 w-8 place-items-center rounded-lg brand-gradient glow">F</span> FAMIDZ
             </div>
-            <p className="text-sm text-slate-400">Всё, что нужно, в одном месте. Маркетплейс №1 для каждого. 🚀</p>
+            <p className="text-sm text-slate-500">Всё, что нужно, в одном месте. Маркетплейс №1 для каждого. 🚀</p>
             <div className="mt-5 flex gap-3">
               {['Send', 'Instagram', 'Youtube'].map((s) => (
-                <a key={s} href="#" className="grid h-9 w-9 place-items-center rounded-lg bg-white/10 transition-colors hover:bg-[hsl(var(--brand))]">
+                <a key={s} href="#" className="grid h-9 w-9 place-items-center rounded-lg bg-white/5 transition-colors hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-ink))]">
                   <Icon name={s} size={17} />
                 </a>
               ))}
@@ -286,16 +288,16 @@ export default function Index() {
               <h4 className="mb-4 font-display font-bold text-white">{col.t}</h4>
               <ul className="space-y-2.5 text-sm">
                 {col.l.map((x) => (
-                  <li key={x}><a href="#" className="transition-colors hover:text-white">{x}</a></li>
+                  <li key={x}><a href="#" className="transition-colors hover:text-[hsl(var(--brand))]">{x}</a></li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
         <div className="border-t border-white/10">
-          <div className="container flex flex-col items-center justify-between gap-3 py-5 text-xs text-slate-400 md:flex-row">
+          <div className="container flex flex-col items-center justify-between gap-3 py-5 text-xs text-slate-500 md:flex-row">
             <span>© 2026 FAMIDZ. Все права защищены.</span>
-            <span className="flex items-center gap-1.5"><Icon name="ShieldCheck" size={14} /> Защищённые платежи · SSL</span>
+            <span className="flex items-center gap-1.5"><Icon name="ShieldCheck" size={14} className="text-[hsl(var(--brand))]" /> Защищённые платежи · SSL</span>
           </div>
         </div>
       </footer>
