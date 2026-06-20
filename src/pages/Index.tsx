@@ -4,6 +4,7 @@ import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { useStore } from '@/context/StoreContext';
 
 const HERO_IMG = 'https://cdn.poehali.dev/projects/95a2bd18-da3b-4707-bf3b-cc17ef944a11/files/7207ddc1-b937-4a1d-b198-7dcfee207eef.jpg';
 const PRODUCTS_IMG = 'https://cdn.poehali.dev/projects/95a2bd18-da3b-4707-bf3b-cc17ef944a11/files/dbe19c63-17ae-4665-838d-f864b12ff354.jpg';
@@ -23,14 +24,7 @@ const CATEGORIES = [
   { name: 'Услуги', icon: 'Briefcase' },
 ];
 
-const PRODUCTS = [
-  { name: 'Смартфон Pro Max 256GB', price: 79990, old: 99990, rating: 4.9, reviews: 1240, tag: 'Хит', icon: 'Smartphone' },
-  { name: 'Беспроводные наушники Air', price: 12490, old: 17990, rating: 4.8, reviews: 860, tag: '-31%', icon: 'Headphones' },
-  { name: 'Кроссовки Street Run', price: 6790, old: 9900, rating: 4.7, reviews: 432, tag: 'Новинка', icon: 'Footprints' },
-  { name: 'Умные часы Series 9', price: 24990, old: 29990, rating: 4.9, reviews: 980, tag: 'Топ', icon: 'Watch' },
-  { name: 'Робот-пылесос Clean+', price: 18900, old: 26900, rating: 4.6, reviews: 311, tag: '-30%', icon: 'Bot' },
-  { name: 'Парфюм Aura 100ml', price: 8490, old: 11900, rating: 4.8, reviews: 654, tag: 'Хит', icon: 'Sparkles' },
-];
+
 
 const PAYMENTS = [
   { name: 'СБП', icon: 'QrCode' },
@@ -45,6 +39,7 @@ const fmt = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
 
 export default function Index() {
   const navigate = useNavigate();
+  const { cartCount, products } = useStore();
   const [active, setActive] = useState('Главная');
 
   return (
@@ -80,16 +75,23 @@ export default function Index() {
           </div>
 
           <div className="ml-auto flex items-center gap-1 md:ml-0">
-            {[
-              { icon: 'Heart', label: 'Избранное' },
-              { icon: 'ShoppingCart', label: 'Корзина' },
-              { icon: 'User', label: 'Войти' },
-            ].map((a) => (
-              <button key={a.label} className="flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-secondary hover:text-[hsl(var(--brand))]">
-                <Icon name={a.icon} size={22} />
-                <span className="hidden sm:block">{a.label}</span>
-              </button>
-            ))}
+            <button className="flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-secondary hover:text-[hsl(var(--brand))]">
+              <Icon name="Heart" size={22} />
+              <span className="hidden sm:block">Избранное</span>
+            </button>
+            <button onClick={() => navigate('/cart')} className="relative flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-secondary hover:text-[hsl(var(--brand))]">
+              <Icon name="ShoppingCart" size={22} />
+              {cartCount > 0 && <span className="absolute right-1.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[hsl(var(--brand))] text-[10px] font-bold text-[hsl(var(--brand-ink))]">{cartCount}</span>}
+              <span className="hidden sm:block">Корзина</span>
+            </button>
+            <button className="flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-secondary hover:text-[hsl(var(--brand))]">
+              <Icon name="User" size={22} />
+              <span className="hidden sm:block">Войти</span>
+            </button>
+            <button onClick={() => navigate('/admin')} className="flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[11px] text-muted-foreground transition-colors hover:bg-secondary hover:text-violet-400">
+              <Icon name="ShieldCheck" size={22} />
+              <span className="hidden sm:block">Админ</span>
+            </button>
           </div>
         </div>
 
@@ -181,21 +183,25 @@ export default function Index() {
           </button>
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-          {PRODUCTS.map((p, i) => (
+          {products.slice(0, 6).map((p, i) => (
             <article
-              key={p.name}
+              key={p.id}
               style={{ animationDelay: `${i * 50}ms` }}
               className="group flex animate-scale-in cursor-pointer flex-col overflow-hidden rounded-2xl border border-border bg-card opacity-0 transition-all hover:-translate-y-1 hover:border-[hsl(var(--brand))]/50 hover:shadow-xl hover:shadow-[hsl(var(--brand))]/10"
-              onClick={() => navigate(`/product/${i + 1}`)}
+              onClick={() => navigate(`/product/${p.id}`)}
             >
               <div className="relative aspect-square overflow-hidden bg-secondary">
                 <span className="absolute left-2 top-2 z-10 rounded-md bg-[hsl(var(--brand))] px-2 py-0.5 text-[11px] font-bold text-[hsl(var(--brand-ink))]">{p.tag}</span>
-                <button className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-background/70 text-muted-foreground backdrop-blur transition-colors hover:text-rose-400">
+                <button className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-background/70 text-muted-foreground backdrop-blur transition-colors hover:text-rose-400" onClick={(e) => e.stopPropagation()}>
                   <Icon name="Heart" size={16} />
                 </button>
-                <div className="grid h-full w-full place-items-center text-[hsl(var(--brand))]/40 transition-transform duration-500 group-hover:scale-110">
-                  <Icon name={p.icon} size={64} />
-                </div>
+                {p.image ? (
+                  <img src={p.image} alt={p.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                ) : (
+                  <div className="grid h-full w-full place-items-center text-[hsl(var(--brand))]/40 transition-transform duration-500 group-hover:scale-110">
+                    <Icon name={p.icon} size={64} />
+                  </div>
+                )}
               </div>
               <div className="flex flex-1 flex-col p-3">
                 <div className="mb-1 flex items-center gap-1 text-xs text-amber-400">
@@ -208,7 +214,7 @@ export default function Index() {
                   <span className="font-display text-lg font-extrabold text-[hsl(var(--brand))]">{fmt(p.price)}</span>
                   <span className="text-xs text-muted-foreground line-through">{fmt(p.old)}</span>
                 </div>
-                <Button size="sm" className="h-9 w-full rounded-lg bg-[hsl(var(--brand))] font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)]">
+                <Button size="sm" onClick={(e) => { e.stopPropagation(); }} className="h-9 w-full rounded-lg bg-[hsl(var(--brand))] font-semibold text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)]">
                   <Icon name="ShoppingCart" size={15} className="mr-1.5" /> В корзину
                 </Button>
               </div>

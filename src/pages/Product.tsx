@@ -3,21 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useStore } from '@/context/StoreContext';
 
-const ALL_PRODUCTS = [
-  { id: 1, name: 'Смартфон Pro Max 256GB', price: 79990, old: 99990, rating: 4.9, reviews: 1240, tag: 'Хит', icon: 'Smartphone', category: 'Электроника', brand: 'TechPro', inStock: true, description: 'Флагманский смартфон с процессором нового поколения, 256 ГБ встроенной памяти и камерой 200 МП. AMOLED-дисплей 6.7" с частотой 120 Гц, зарядка 65W.', specs: [['Дисплей', 'AMOLED 6.7", 120 Гц'], ['Процессор', 'Snapdragon 8 Gen 3'], ['Память', '12 ГБ / 256 ГБ'], ['Камера', '200 МП + 12 МП + 10 МП'], ['Батарея', '5000 мАч, 65W'], ['ОС', 'Android 14']] },
-  { id: 2, name: 'Беспроводные наушники Air X', price: 12490, old: 17990, rating: 4.8, reviews: 860, tag: '-31%', icon: 'Headphones', category: 'Электроника', brand: 'SoundMax', inStock: true, description: 'Наушники с активным шумоподавлением ANC, до 30 часов автономной работы и кристально чистым звуком. Складная конструкция, быстрая зарядка 15 мин = 3 ч работы.', specs: [['Тип', 'Полноразмерные, накладные'], ['ANC', 'Активное шумоподавление'], ['Автономность', 'До 30 часов'], ['Bluetooth', '5.3'], ['Вес', '250 г'], ['Цвет', 'Midnight Black']] },
-  { id: 3, name: 'Умные часы Series 9', price: 24990, old: 29990, rating: 4.9, reviews: 980, tag: 'Топ', icon: 'Watch', category: 'Электроника', brand: 'TechPro', inStock: true, description: 'Смарт-часы с мониторингом ЧСС, SpO2, стресса. AMOLED-экран 1.9", защита IP68, GPS, NFC для оплаты. Совместимы с iOS и Android.', specs: [['Экран', 'AMOLED 1.9"'], ['Защита', 'IP68'], ['Автономность', '14 дней'], ['Датчики', 'ЧСС, SpO2, GPS'], ['NFC', 'Оплата'], ['Совместимость', 'iOS / Android']] },
-  { id: 4, name: 'Планшет Ultra 11"', price: 54990, old: 69990, rating: 4.7, reviews: 540, tag: '-21%', icon: 'Tablet', category: 'Электроника', brand: 'TechPro', inStock: false, description: 'Мощный планшет для работы и творчества. IPS-дисплей 11", процессор MediaTek Dimensity 9300, 256 ГБ SSD. Поддержка стилуса и клавиатуры.', specs: [['Дисплей', 'IPS 11", 2K, 120 Гц'], ['Процессор', 'Dimensity 9300'], ['Память', '12 ГБ / 256 ГБ'], ['Батарея', '10000 мАч'], ['ОС', 'Android 14'], ['Разъём', 'USB-C 3.2']] },
-  { id: 5, name: 'Робот-пылесос Clean+', price: 18900, old: 26900, rating: 4.6, reviews: 311, tag: '-30%', icon: 'Bot', category: 'Дом и сад', brand: 'HomeBot', inStock: true, description: 'Умный робот-пылесос с лазерной навигацией, влажной уборкой и управлением через приложение. Мощность всасывания 4000 Па, автоматическая зарядка.', specs: [['Навигация', 'Лазерная (LiDAR)'], ['Мощность', '4000 Па'], ['Уборка', 'Сухая + влажная'], ['Автономность', '3 часа'], ['Управление', 'Приложение / Алиса'], ['Площадь', 'до 200 м²']] },
-  { id: 6, name: 'Кроссовки Street Run', price: 6790, old: 9900, rating: 4.7, reviews: 432, tag: 'Новинка', icon: 'Footprints', category: 'Обувь', brand: 'RunFast', inStock: true, description: 'Лёгкие кроссовки для бега и повседневной носки. Дышащий верх Flyknit, амортизирующая подошва EVA, рефлективные элементы для безопасности.', specs: [['Верх', 'Flyknit mesh'], ['Подошва', 'EVA + резина'], ['Вес', '280 г (US9)'], ['Сезон', 'Всесезонные'], ['Уход', 'Ручная стирка'], ['Размеры', '36–47']] },
-  { id: 7, name: 'Парфюм Aura 100ml', price: 8490, old: 11900, rating: 4.8, reviews: 654, tag: 'Хит', icon: 'Sparkles', category: 'Красота', brand: 'LuxScent', inStock: true, description: 'Изысканный парфюм для дерзких и уверенных. Верхние ноты: бергамот, грейпфрут. Сердце: роза, жасмин, пачули. База: ваниль, мускус, сандал.', specs: [['Объём', '100 мл'], ['Тип', 'Парфюмерная вода (EDP)'], ['Стойкость', '8–10 часов'], ['Шлейф', '4–6 часов'], ['Пол', 'Унисекс'], ['Страна', 'Франция']] },
-  { id: 8, name: 'Куртка Winter Pro', price: 12900, old: 18900, rating: 4.6, reviews: 223, tag: '-32%', icon: 'Shirt', category: 'Одежда', brand: 'FashionRu', inStock: true, description: 'Тёплая зимняя куртка с наполнителем синтепон 300 г, водоотталкивающей пропиткой DWR. Съёмный капюшон, регулируемые манжеты.', specs: [['Наполнитель', 'Синтепон 300 г/м²'], ['Пропитка', 'DWR Water Resist'], ['Капюшон', 'Съёмный'], ['Температура', 'до −25°C'], ['Состав', '100% полиэстер'], ['Размеры', 'XS–3XL']] },
-  { id: 9, name: 'Велотренажёр CardioX', price: 32900, old: 44900, rating: 4.5, reviews: 187, tag: 'Новинка', icon: 'Dumbbell', category: 'Спорт', brand: 'SportPro', inStock: true, description: 'Магнитный велотренажёр с 16 уровнями сопротивления, встроенным пульсометром и ЖК-дисплеем. Бесшумный ход, максимальная нагрузка 130 кг.', specs: [['Тип', 'Магнитный'], ['Уровни', '16 уровней сопротивления'], ['Нагрузка', 'до 130 кг'], ['Дисплей', 'ЖК-экран'], ['Пульсометр', 'Встроенный'], ['Вес', '25 кг']] },
-  { id: 10, name: 'Автокресло Safe 360°', price: 14900, old: 19900, rating: 4.9, reviews: 412, tag: 'Топ', icon: 'Baby', category: 'Детские товары', brand: 'KidsCare', inStock: true, description: 'Детское автокресло с вращением 360°, установкой ISOFIX и встроенным наклономером. Группы 0+/1/2 (0–25 кг). Сертификат безопасности ECE R129.', specs: [['Группа', '0+/1/2 (0–25 кг)'], ['Поворот', '360° с фиксацией'], ['Крепление', 'ISOFIX + штатный ремень'], ['Стандарт', 'ECE R129 (i-Size)'], ['Возраст', '0–7 лет'], ['Вес кресла', '13.5 кг']] },
-  { id: 11, name: 'Газонокосилка EcoGreen', price: 28900, old: 36900, rating: 4.4, reviews: 98, tag: '-22%', icon: 'Home', category: 'Дом и сад', brand: 'HomeBot', inStock: false, description: 'Аккумуляторная газонокосилка с шириной захвата 42 см, регулировкой высоты стрижки в 7 положениях. Бесшумная работа, мешок 50 л в комплекте.', specs: [['Тип', 'Аккумуляторная'], ['Ширина', '42 см'], ['Высота стрижки', '25–75 мм (7 позиций)'], ['Мешок', '50 литров'], ['Работа', 'до 60 мин'], ['Вес', '15 кг']] },
-  { id: 12, name: 'Видеорегистратор Cam Pro', price: 7490, old: 9990, rating: 4.7, reviews: 330, tag: 'Хит', icon: 'Car', category: 'Автотовары', brand: 'AutoVision', inStock: true, description: 'Видеорегистратор с разрешением 4K, ночным режимом StarVis, углом обзора 170° и встроенным Wi-Fi. Встроенный GPS-трекер, режим парковки.', specs: [['Разрешение', '4K (3840×2160) 30fps'], ['Угол обзора', '170°'], ['Ночной режим', 'Sony StarVis 2'], ['Wi-Fi', 'Встроенный'], ['GPS', 'Встроенный'], ['Карта', 'microSD до 256 ГБ']] },
-];
+
 
 const fmt = (n: number) => n.toLocaleString('ru-RU') + ' ₽';
 
@@ -30,14 +18,15 @@ const REVIEWS_MOCK = [
 export default function Product() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = ALL_PRODUCTS.find((p) => p.id === Number(id)) ?? ALL_PRODUCTS[0];
+  const { products, addToCart, cartCount } = useStore();
+  const product = products.find((p) => p.id === Number(id)) ?? products[0];
 
   const [qty, setQty] = useState(1);
   const [inCart, setInCart] = useState(false);
   const [wished, setWished] = useState(false);
   const [activeTab, setActiveTab] = useState<'desc' | 'specs' | 'reviews'>('desc');
 
-  const similar = ALL_PRODUCTS.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
+  const similar = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
   const discount = Math.round(((product.old - product.price) / product.old) * 100);
 
   return (
@@ -53,8 +42,10 @@ export default function Product() {
             <Icon name="ArrowLeft" size={16} /> Назад
           </button>
           <div className="ml-auto flex items-center gap-1">
-            <button className="flex flex-col items-center gap-0.5 rounded-xl px-2 py-1 text-[11px] text-muted-foreground hover:text-[hsl(var(--brand))]">
-              <Icon name="ShoppingCart" size={20} /><span className="hidden sm:block">Корзина</span>
+            <button onClick={() => navigate('/cart')} className="relative flex flex-col items-center gap-0.5 rounded-xl px-2 py-1 text-[11px] text-muted-foreground hover:text-[hsl(var(--brand))]">
+              <Icon name="ShoppingCart" size={20} />
+              {cartCount > 0 && <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[hsl(var(--brand))] text-[10px] font-bold text-[hsl(var(--brand-ink))]">{cartCount}</span>}
+              <span className="hidden sm:block">Корзина</span>
             </button>
           </div>
         </div>
@@ -84,17 +75,25 @@ export default function Product() {
               <div className="absolute left-3 top-3 z-20 flex flex-col gap-2">
                 <Badge className="rounded-lg bg-[hsl(var(--brand))] text-sm font-bold text-[hsl(var(--brand-ink))] px-2 py-1">−{discount}%</Badge>
               </div>
-              <div className="grid h-full w-full place-items-center text-[hsl(var(--brand))]/25">
-                <Icon name={product.icon} size={180} />
-              </div>
+              {product.image ? (
+                <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+              ) : (
+                <div className="grid h-full w-full place-items-center text-[hsl(var(--brand))]/25">
+                  <Icon name={product.icon} size={180} />
+                </div>
+              )}
               <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[hsl(var(--brand))] opacity-10 blur-3xl" />
             </div>
             <div className="flex gap-2">
               {[1, 2, 3, 4].map((i) => (
                 <button key={i} className={`aspect-square w-16 overflow-hidden rounded-xl border bg-card transition-colors ${i === 1 ? 'border-[hsl(var(--brand))]' : 'border-border hover:border-[hsl(var(--brand))]/50'}`}>
-                  <div className="grid h-full w-full place-items-center text-[hsl(var(--brand))]/20">
-                    <Icon name={product.icon} size={28} />
-                  </div>
+                  {product.image ? (
+                    <img src={product.image} alt="" className="h-full w-full object-cover opacity-70" />
+                  ) : (
+                    <div className="grid h-full w-full place-items-center text-[hsl(var(--brand))]/20">
+                      <Icon name={product.icon} size={28} />
+                    </div>
+                  )}
                 </button>
               ))}
             </div>
@@ -147,7 +146,7 @@ export default function Product() {
               </div>
               <Button
                 disabled={!product.inStock}
-                onClick={() => setInCart(true)}
+                onClick={() => { addToCart(product, qty); setInCart(true); }}
                 className={`h-11 flex-1 rounded-xl font-semibold transition-all ${inCart ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-[hsl(var(--brand))] text-[hsl(var(--brand-ink))] hover:bg-[hsl(199_89%_62%)] glow'} disabled:opacity-40`}
               >
                 <Icon name={inCart ? 'Check' : 'ShoppingCart'} size={18} className="mr-2" />
